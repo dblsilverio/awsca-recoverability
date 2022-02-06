@@ -1,0 +1,41 @@
+(base) diogo@gargantua:~/.ssh$ ssh -i udacity-recoverability.pem ec2-user@3.83.126.35
+Last login: Sun Feb  6 21:57:47 2022 from 179.177.35.213.dynamic.adsl.gvt.net.br
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-10-1-10-93 ~]$ mysql -h udacity-db-active.c9mds1sztnsc.us-east-1.rds.amazonaws.com -u admin -p -D udacity
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 29
+Server version: 8.0.23 Source distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [udacity]> create table people(
+    -> id int auto_increment primary key,
+    -> name varchar(100) not null,
+    -> email varchar(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+MySQL [udacity]> insert into people(name, email) values('Alice', 'alice@mail.com'), ('Bob', 'bob@mail.com');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MySQL [udacity]> select * from people;
++----+-------+----------------+
+| id | name  | email          |
++----+-------+----------------+
+|  1 | Alice | alice@mail.com |
+|  2 | Bob   | bob@mail.com   |
++----+-------+----------------+
+2 rows in set (0.00 sec)
+
+MySQL [udacity]> exit
+Bye
+[ec2-user@ip-10-1-10-93 ~]$ 

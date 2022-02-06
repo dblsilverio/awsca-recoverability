@@ -1,0 +1,35 @@
+(base) diogo@gargantua:~/.ssh$ ssh -i udacity-recoverability-standby.pem ec2-user@54.67.121.171
+Last login: Sun Feb  6 22:05:20 2022 from 179.177.35.213.dynamic.adsl.gvt.net.br
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-10-2-11-89 ~]$ mysql -h udacity-db-standby.czw1qgxhplyj.us-west-1.rds.amazonaws.com -u admin -p -D udacity
+Enter password: 
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.23 Source distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [udacity]> insert into people(name, email) values('Charlie', 'charlie@mail.com');
+ERROR 1290 (HY000): The MySQL server is running with the --read-only option so it cannot execute this statement
+MySQL [udacity]> select * from people;
++----+-------+----------------+
+| id | name  | email          |
++----+-------+----------------+
+|  1 | Alice | alice@mail.com |
+|  2 | Bob   | bob@mail.com   |
++----+-------+----------------+
+2 rows in set (0.01 sec)
+
+MySQL [udacity]> exit
+Bye
+[ec2-user@ip-10-2-11-89 ~]$ 

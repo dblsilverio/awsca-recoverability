@@ -1,0 +1,20 @@
+For initial consideration this proposed Multi-AZ solution have a daily primary RDS Backup window starting around 03:42-04:12 UTC (GMT) and 
+complete cross-region(us-east-1 to us-west-1) replication.
+
+Considering this solution we have a minimum RPO estimate for a single-AZ between 60 and 120 seconds, that is the time to RDS multi-AZ 
+failover to complete, occasionally the time could be greater due to large transactions or lengthy recovery processes[1]. The RTO would consider
+this interval plus the time to reestablish application runtime and caches depending on environment configurations.[2]
+
+Considering an entire region outage and that the replication to a standby region is active as planned, the RPO and RTO would be closely estimated 
+as the sum of these operations:
+* The replication lag between primary and standby instances;
+* The period between the failure of the primary replica and the promotion of the cross-region read replica;
+* Reconfiguring applications to use the new primary DNS or purge any existing DNS caches.
+
+In a matter of numbers, the RPO is based on promoting a cross-region replica and it could take far more time than a simple AZ failover[3], but 
+would be definitely faster than restoring a complete daily snapshot. The RTO would consider the promotion time plus the reconfiguration
+of applications, and it may vary widely depending on technology stack and development methodologies.[2]
+
+[1] - Failover process for Amazon RDS (https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html#Concepts.MultiAZ.Failover)
+[2] - Setting the JVM TTL for DNS name lookups (https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZSingleStandby.html#Concepts.MultiAZ.Failover.Java-DNS)
+[3] - Promoting a read replica to be a standalone DB instance (https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html#USER_ReadRepl.Promote)
